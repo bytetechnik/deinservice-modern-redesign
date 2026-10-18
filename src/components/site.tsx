@@ -3,6 +3,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, Mail, Phone, MapPin, Linkedin, ArrowUpRight } from "lucide-react";
 import { useLang, useT } from "@/lib/i18n";
 
+export * from "./NetworkBackground";
+
 export function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -52,8 +54,10 @@ export function Header() {
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "py-2" : "py-4"}`}>
       <div className={`mx-auto flex max-w-7xl items-center justify-between rounded-full px-5 py-3 transition-all duration-500 ${scrolled ? "glass mx-4 shadow-soft md:mx-auto" : ""}`}>
         <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent-gradient font-display text-sm font-bold text-primary-foreground">DS</span>
-          <span className={`font-display text-lg font-bold ${scrolled ? "text-foreground" : "text-ink-foreground"}`}>Dein Service</span>
+          <img src="/logo-icon.png" alt="Logo" className="h-9 w-9 rounded-full object-contain" />
+          <span className={`font-display text-xs font-extrabold uppercase tracking-[0.2em] ${scrolled ? "text-foreground" : "text-ink-foreground"}`}>
+            Dein Service
+          </span>
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((n) => (

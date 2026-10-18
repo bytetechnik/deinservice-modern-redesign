@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight, Zap, ShieldCheck, Users, Radio } from "lucide
 import { useT } from "@/lib/i18n";
 import { img, ogImage } from "@/lib/images";
 import { services } from "@/lib/services";
-import { Reveal, CTA } from "@/components/site";
+import { Reveal, CTA, NetworkBackground } from "@/components/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,7 +36,8 @@ function Index() {
   return (
     <>
       <section className="relative flex min-h-screen items-center overflow-hidden bg-ink">
-        <img src={img.network} alt="" className="animate-kenburns absolute inset-0 h-full w-full object-cover" />
+        <img src={img.network} alt="" className="animate-kenburns absolute inset-0 h-full w-full object-cover opacity-50" />
+        <NetworkBackground />
         <div className="bg-hero absolute inset-0" />
         <div className="animate-float absolute right-[10%] top-[25%] h-72 w-72 rounded-full bg-accent-gradient opacity-30 blur-3xl" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pt-24">
