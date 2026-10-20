@@ -1,6 +1,6 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Menu, X, Mail, Phone, MapPin, Linkedin, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, ArrowUpRight, Sparkles } from "lucide-react";
 import { useLang, useT } from "@/lib/i18n";
 import { srcSet } from "@/lib/images";
 
@@ -28,16 +28,97 @@ const nav = [
   { to: "/karriere", de: "Karriere", en: "Careers" },
 ] as const;
 
-function LangSwitch() {
+function LangSwitch({ dark = false }: { dark?: boolean }) {
   const { lang, setLang } = useLang();
   return (
-    <div className="flex rounded-full border border-border bg-card p-1 text-xs font-bold">
+    <div className={`flex rounded-full border p-1 text-xs font-bold ${dark ? "border-ink-foreground/15 bg-ink-foreground/5" : "border-border bg-card"}`}>
       {(["de", "en"] as const).map((l) => (
         <button key={l} onClick={() => setLang(l)} aria-label={`Language ${l}`}
-          className={`rounded-full px-3 py-1 uppercase transition-all ${lang === l ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+          className={`rounded-full px-3 py-1 uppercase transition-all ${lang === l ? "bg-primary text-primary-foreground" : dark ? "text-ink-foreground/50 hover:text-ink-foreground" : "text-muted-foreground hover:text-foreground"}`}>
           {l}
         </button>
       ))}
+    </div>
+  );
+}
+
+function MenuToggle({ open, onToggle, scrolled }: { open: boolean; onToggle: () => void; scrolled: boolean }) {
+  // White bars over the dark hero, black bars once the header turns light.
+  const bar = `absolute left-2 block h-0.5 rounded-full transition-all duration-300 ${
+    open ? "bg-ink-foreground" : scrolled ? "bg-ink" : "bg-white"
+  }`;
+  return (
+    <button
+      onClick={onToggle}
+      aria-label="Menu"
+      aria-expanded={open}
+      className="relative grid h-11 w-11 shrink-0 place-items-center lg:hidden"
+    >
+      <span className="relative block h-4 w-5">
+        <span className={`${bar} top-0 ${open ? "left-1 top-1.5 w-6 rotate-45" : "w-5"}`} />
+        <span className={`${bar} top-1.5 w-5 ${open ? "scale-x-0 opacity-0" : ""}`} />
+        <span className={`${bar} top-3 ${open ? "left-1 top-1.5 w-6 -rotate-45" : "w-3.5"}`} />
+      </span>
+    </button>
+  );
+}
+
+function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const t = useT();
+  const location = useLocation();
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+  useEffect(() => onClose(), [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!open) return null;
+  const links = [...nav, { to: "/kontakt", de: "Kontakt", en: "Contact" } as const];
+  return (
+    <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation">
+      <button className="animate-backdrop absolute inset-0 bg-ink/70 backdrop-blur-sm" aria-label="Close menu" onClick={onClose} />
+      <aside className="animate-drawer absolute inset-y-0 right-0 flex w-[min(24rem,92vw)] flex-col overflow-y-auto bg-ink text-ink-foreground shadow-soft">
+        <div className="animate-float pointer-events-none absolute -right-24 top-16 h-72 w-72 rounded-full bg-accent-gradient opacity-25 blur-3xl" />
+        <div className="relative flex items-center justify-between border-b border-ink-foreground/10 px-6 py-5">
+          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-accent">
+            <Sparkles size={14} /> {t({ de: "Navigation", en: "Menu" })}
+          </span>
+          <button onClick={onClose} aria-label="Close" className="grid h-10 w-10 place-items-center rounded-full border border-ink-foreground/15 text-lg leading-none transition-colors hover:border-accent hover:text-accent">&times;</button>
+        </div>
+        <nav className="relative mt-4 flex-1 px-6">
+          {links.map((n, i) => (
+            <NavLink key={n.to} to={n.to} end={n.to === "/"} onClick={onClose} className="group block border-b border-ink-foreground/5 py-1">
+              {({ isActive }) => (
+                <span
+                  className={`animate-drawer-item flex items-baseline gap-4 py-3 transition-colors ${isActive ? "text-accent" : "text-ink-foreground/85 group-hover:text-accent"}`}
+                  style={{ animationDelay: `${90 + i * 60}ms` }}
+                >
+                  <span className="font-display text-xs font-bold tabular-nums text-ink-foreground/35">0{i + 1}</span>
+                  <span className="text-3xl font-bold tracking-tight">{t(n)}</span>
+                  <ArrowUpRight size={20} className={`ml-auto self-center transition-transform group-hover:translate-x-1 ${isActive ? "text-accent" : "opacity-0 group-hover:opacity-100"}`} />
+                </span>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="relative mt-8 space-y-6 px-6 pb-10">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-widest text-ink-foreground/50">{t({ de: "Sprache", en: "Language" })}</span>
+            <LangSwitch dark />
+          </div>
+          <div className="space-y-2 text-sm text-ink-foreground/70">
+            <a href="tel:+496924009766" className="flex items-center gap-2 hover:text-accent"><Phone size={15} /> +49 (0) 69 2400 9766</a>
+            <a href="mailto:info@deinservice.gmbh" className="flex items-center gap-2 hover:text-accent"><Mail size={15} /> info@deinservice.gmbh</a>
+          </div>
+          <p className="text-xs text-ink-foreground/40">Friedrich-Baur-Str. 13 · 63150 Heusenstamm</p>
+        </div>
+      </aside>
     </div>
   );
 }
@@ -77,22 +158,14 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <LangSwitch />
-          <Link to="/kontakt" className="hidden rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-bold text-primary-foreground transition-transform hover:scale-105 md:inline-flex">
+          <div className="hidden lg:block"><LangSwitch /></div>
+          <Link to="/kontakt" className="hidden rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-bold text-primary-foreground transition-transform hover:scale-105 md:inline-flex lg:hidden">
             {t({ de: "Kontakt", en: "Contact" })}
           </Link>
-          <button className={`lg:hidden ${scrolled ? "text-foreground" : "text-ink-foreground"}`} onClick={() => setOpen(!open)} aria-label="Menu">
-            {open ? <X /> : <Menu />}
-          </button>
+          <MenuToggle open={open} onToggle={() => setOpen(!open)} scrolled={scrolled} />
         </div>
       </div>
-      {open && (
-        <div className="glass mx-4 mt-2 rounded-3xl p-4 shadow-soft lg:hidden">
-          {[...nav, { to: "/kontakt", de: "Kontakt", en: "Contact" } as const].map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="block rounded-xl px-4 py-3 font-semibold hover:bg-muted">{t(n)}</Link>
-          ))}
-        </div>
-      )}
+      <MobileDrawer open={open} onClose={() => setOpen(false)} />
     </header>
   );
 }
