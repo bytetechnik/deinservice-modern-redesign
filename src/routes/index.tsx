@@ -1,25 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Zap, ShieldCheck, Users, Radio } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { services } from "@/lib/services";
 import { Reveal, CTA, NetworkBackground } from "@/components/site";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Dein Service GmbH – Telekom-Expertise in Frankfurt & Rhein-Main" },
-      { name: "description", content: "Planung, Bau und Betrieb von Glasfaser- und Telekommunikationsnetzen. Ihr Partner aus Frankfurt am Main." },
-      { property: "og:title", content: "Dein Service GmbH – Telekom-Expertise" },
-      { property: "og:description", content: "Glasfaser, Netzbau, Field Service und Projektmanagement aus Frankfurt." },
-      { property: "og:image", content: ogImage("network") },
-      { name: "twitter:image", content: ogImage("network") },
-    ],
-  }),
-  component: Index,
-});
-
-function Index() {
+export default function Index() {
+  useSeo("Dein Service GmbH – Telekom-Expertise in Frankfurt & Rhein-Main", [
+    { name: "description", content: "Planung, Bau und Betrieb von Glasfaser- und Telekommunikationsnetzen. Ihr Partner aus Frankfurt am Main." },
+    { property: "og:title", content: "Dein Service GmbH – Telekom-Expertise" },
+    { property: "og:description", content: "Glasfaser, Netzbau, Field Service und Projektmanagement aus Frankfurt." },
+    { property: "og:image", content: ogImage("network") },
+    { name: "twitter:image", content: ogImage("network") },
+  ]);
   const t = useT();
   const stats = [
     { n: "FTTH", l: { de: "Glasfaser-Spezialisten", en: "Fiber specialists" } },

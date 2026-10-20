@@ -1,17 +1,32 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
-import { routeTree } from "@/routeTree.gen";
+import App from "@/app";
 
-// Match routes without running loaders or rendering: loaders may need a server or
-// network the test run lacks, and jsdom never loads the stylesheets React waits on.
+// The full app renders the marketing pages; only jsdom APIs that components touch
+// on mount (IntersectionObserver in <Reveal>, canvas) need to be tolerated.
+function renderAt(path: string) {
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <App />
+    </MemoryRouter>,
+  );
+}
+
 describe("App routing", () => {
-  it("matches a page for / instead of falling back to not found", () => {
-    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+  it("renders the home page at /", () => {
+    renderAt("/");
+    expect(screen.getByText(/Wir verbinden/i)).toBeInTheDocument();
+  });
 
-    const matches = router.matchRoutes("/");
+  it("renders the contact page at /kontakt", () => {
+    renderAt("/kontakt");
+    expect(screen.getByText(/Lassen Sie uns sprechen/i)).toBeInTheDocument();
+  });
 
-    expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  it("shows the 404 page for an unknown route", () => {
+    renderAt("/gibt-es-nicht");
+    expect(screen.getByText("404")).toBeInTheDocument();
   });
 });

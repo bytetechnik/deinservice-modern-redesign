@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, Mail, Phone, MapPin, Linkedin, ArrowUpRight } from "lucide-react";
 import { useLang, useT } from "@/lib/i18n";
@@ -61,11 +61,18 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} activeOptions={{ exact: true }}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${scrolled ? "text-foreground/70 hover:text-foreground" : "text-ink-foreground/80 hover:text-ink-foreground"}`}
-              activeProps={{ className: "!text-accent" }}>
+            <NavLink
+              key={n.to}
+              to={n.to}
+              end
+              className={({ isActive }) =>
+                `rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  scrolled ? "text-foreground/70 hover:text-foreground" : "text-ink-foreground/80 hover:text-ink-foreground"
+                } ${isActive ? "!text-accent" : ""}`
+              }
+            >
               {t(n)}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <div className="flex items-center gap-3">
@@ -113,7 +120,10 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-ink-foreground/10 py-6 text-center text-xs text-ink-foreground/50">
-        © {new Date().getFullYear()} Dein Service GmbH · {t({ de: "Bilder: Unsplash (lizenzfrei)", en: "Images: Unsplash (royalty-free)" })}
+        © {new Date().getFullYear()} Dein Service GmbH · Design by{" "}
+        <a href="https://bytetechnik.de" target="_blank" rel="noreferrer" className="transition-colors hover:text-accent">
+          ByteTechnik.de
+        </a>
       </div>
     </footer>
   );

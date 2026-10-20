@@ -1,24 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
-export const Route = createFileRoute("/projekte")({
-  head: () => ({
-    meta: [
-      { title: "Projekte & News – Dein Service GmbH" },
-      { name: "description", content: "FTTH-Ausbau und Betrieb für die Westconnect GmbH, neue Niederlassung in Heusenstamm und weitere Projekte." },
-      { property: "og:title", content: "Projekte & News – Dein Service GmbH" },
-      { property: "og:description", content: "Unsere aktuellen Projekte im Glasfaserausbau." },
-      { property: "og:image", content: ogImage("fiber") },
-      { name: "twitter:image", content: ogImage("fiber") },
-    ],
-  }),
-  component: Page,
-});
-
-function Page() {
+export default function Page() {
+  useSeo("Projekte & News – Dein Service GmbH", [
+    { name: "description", content: "FTTH-Ausbau und Betrieb für die Westconnect GmbH, neue Niederlassung in Heusenstamm und weitere Projekte." },
+    { property: "og:title", content: "Projekte & News – Dein Service GmbH" },
+    { property: "og:description", content: "Unsere aktuellen Projekte im Glasfaserausbau." },
+    { property: "og:image", content: ogImage("fiber") },
+    { name: "twitter:image", content: ogImage("fiber") },
+  ]);
   const t = useT();
   const projects = [
     { image: img.fiber, tag: "FTTH · 2026", place: "Rodgau · Seligenstadt · Hainburg",

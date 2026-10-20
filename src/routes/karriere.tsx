@@ -1,24 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Briefcase, ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { PageHero, Reveal } from "@/components/site";
 
-export const Route = createFileRoute("/karriere")({
-  head: () => ({
-    meta: [
-      { title: "Karriere – Dein Service GmbH" },
-      { name: "description", content: "Mitarbeit & Karriere bei Dein Service: Jobs in Glasfaser, Netzbau, Field Service und Projektmanagement." },
-      { property: "og:title", content: "Karriere – Dein Service GmbH" },
-      { property: "og:description", content: "Werden Sie Teil unseres Teams." },
-      { property: "og:image", content: ogImage("team") },
-      { name: "twitter:image", content: ogImage("team") },
-    ],
-  }),
-  component: Page,
-});
-
-function Page() {
+export default function Page() {
+  useSeo("Karriere – Dein Service GmbH", [
+    { name: "description", content: "Mitarbeit & Karriere bei Dein Service: Jobs in Glasfaser, Netzbau, Field Service und Projektmanagement." },
+    { property: "og:title", content: "Karriere – Dein Service GmbH" },
+    { property: "og:description", content: "Werden Sie Teil unseres Teams." },
+    { property: "og:image", content: ogImage("team") },
+    { name: "twitter:image", content: ogImage("team") },
+  ]);
   const t = useT();
   const roles = [
     { de: "Bauleiter (m/w/d) Glasfaser", en: "Site Manager (m/f/d) Fiber" },

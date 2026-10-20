@@ -1,25 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { services } from "@/lib/services";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
-export const Route = createFileRoute("/leistungen")({
-  head: () => ({
-    meta: [
-      { title: "Leistungen – Dein Service GmbH" },
-      { name: "description", content: "Planung, Netzrealisierung, Field Service, Kundenaktivierungen, Projekt- und Interims-Management." },
-      { property: "og:title", content: "Leistungen – Dein Service GmbH" },
-      { property: "og:description", content: "Alle Leistungen rund um Telekommunikations- und Glasfasernetze." },
-      { property: "og:image", content: ogImage("construction") },
-      { name: "twitter:image", content: ogImage("construction") },
-    ],
-  }),
-  component: Page,
-});
-
-function Page() {
+export default function Page() {
+  useSeo("Leistungen – Dein Service GmbH", [
+    { name: "description", content: "Planung, Netzrealisierung, Field Service, Kundenaktivierungen, Projekt- und Interims-Management." },
+    { property: "og:title", content: "Leistungen – Dein Service GmbH" },
+    { property: "og:description", content: "Alle Leistungen rund um Telekommunikations- und Glasfasernetze." },
+    { property: "og:image", content: ogImage("construction") },
+    { name: "twitter:image", content: ogImage("construction") },
+  ]);
   const t = useT();
   return (
     <>

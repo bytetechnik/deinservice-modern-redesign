@@ -1,25 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { PageHero, Reveal } from "@/components/site";
 
-export const Route = createFileRoute("/kontakt")({
-  head: () => ({
-    meta: [
-      { title: "Kontakt – Dein Service GmbH" },
-      { name: "description", content: "Kontaktieren Sie Dein Service: +49 (0) 69 2400 9766, info@deinservice.gmbh, Niederlassung Heusenstamm." },
-      { property: "og:title", content: "Kontakt – Dein Service GmbH" },
-      { property: "og:description", content: "Sprechen Sie mit uns über Ihr Projekt." },
-      { property: "og:image", content: ogImage("meeting") },
-      { name: "twitter:image", content: ogImage("meeting") },
-    ],
-  }),
-  component: Page,
-});
-
-function Page() {
+export default function Page() {
+  useSeo("Kontakt – Dein Service GmbH", [
+    { name: "description", content: "Kontaktieren Sie Dein Service: +49 (0) 69 2400 9766, info@deinservice.gmbh, Niederlassung Heusenstamm." },
+    { property: "og:title", content: "Kontakt – Dein Service GmbH" },
+    { property: "og:description", content: "Sprechen Sie mit uns über Ihr Projekt." },
+    { property: "og:image", content: ogImage("meeting") },
+    { name: "twitter:image", content: ogImage("meeting") },
+  ]);
   const t = useT();
   const [f, setF] = useState({ name: "", email: "", msg: "" });
   const send = (e: React.FormEvent) => {

@@ -1,23 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
+import { useSeo } from "@/lib/seo";
 import { img, ogImage } from "@/lib/images";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
-export const Route = createFileRoute("/ueber-uns")({
-  head: () => ({
-    meta: [
-      { title: "Über uns – Dein Service GmbH" },
-      { name: "description", content: "Deutsche Infrastruktur und Service GmbH – Erfahrung, Zuverlässigkeit und Nähe zum Auftraggeber aus Frankfurt am Main." },
-      { property: "og:title", content: "Über uns – Dein Service GmbH" },
-      { property: "og:description", content: "Wer wir sind und wofür wir stehen." },
-      { property: "og:image", content: ogImage("office") },
-      { name: "twitter:image", content: ogImage("office") },
-    ],
-  }),
-  component: Page,
-});
-
-function Page() {
+export default function Page() {
+  useSeo("Über uns – Dein Service GmbH", [
+    { name: "description", content: "Deutsche Infrastruktur und Service GmbH – Erfahrung, Zuverlässigkeit und Nähe zum Auftraggeber aus Frankfurt am Main." },
+    { property: "og:title", content: "Über uns – Dein Service GmbH" },
+    { property: "og:description", content: "Wer wir sind und wofür wir stehen." },
+    { property: "og:image", content: ogImage("office") },
+    { name: "twitter:image", content: ogImage("office") },
+  ]);
   const t = useT();
   const values = [
     { de: "Erfahrung", en: "Experience" },
