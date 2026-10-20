@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useSeo } from "@/lib/seo";
-import { img, ogImage } from "@/lib/images";
+import { img, ogImage, srcSet } from "@/lib/images";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
 export default function Page() {
@@ -35,7 +35,7 @@ export default function Page() {
       <section className="mx-auto grid max-w-7xl gap-8 px-6 py-28 md:grid-cols-2">
         {projects.map((p, i) => (
           <Reveal key={i} delay={(i % 2) * 150} className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-all hover:-translate-y-2 hover:shadow-soft">
-            <div className="overflow-hidden"><img src={p.image} alt="" className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-110" /></div>
+            <div className="overflow-hidden"><img src={p.image} srcSet={srcSet(p.image, [640, 960, 1280])} sizes="(min-width:768px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-110" /></div>
             <div className="p-8">
               <div className="flex flex-wrap items-center gap-3 text-sm">
                 <span className="rounded-full bg-accent px-3 py-1 font-bold text-accent-foreground">{p.tag}</span>

@@ -1,6 +1,6 @@
 import { useT } from "@/lib/i18n";
 import { useSeo } from "@/lib/seo";
-import { img, ogImage } from "@/lib/images";
+import { img, ogImage, srcSet } from "@/lib/images";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
 export default function Page() {
@@ -45,7 +45,7 @@ export default function Page() {
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-28 md:grid-cols-3">
         {[img.team, img.meeting, img.building].map((src, i) => (
           <Reveal key={src} delay={i * 120} className={`overflow-hidden rounded-[2rem] ${i === 1 ? "md:translate-y-12" : ""}`}>
-            <img src={src} alt="" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-110" />
+            <img src={src} srcSet={srcSet(src, [480, 640, 800, 1000])} sizes="(min-width:768px) 33vw, 90vw" alt="" loading="lazy" decoding="async" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-110" />
           </Reveal>
         ))}
       </section>

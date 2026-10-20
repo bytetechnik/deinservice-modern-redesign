@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Zap, ShieldCheck, Users, Radio } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useSeo } from "@/lib/seo";
-import { img, ogImage } from "@/lib/images";
+import { img, ogImage, srcSet } from "@/lib/images";
 import { services } from "@/lib/services";
 import { Reveal, CTA, NetworkBackground } from "@/components/site";
 
@@ -30,7 +30,7 @@ export default function Index() {
   return (
     <>
       <section className="relative flex min-h-screen items-center overflow-hidden bg-ink">
-        <img src={img.network} alt="" className="animate-kenburns absolute inset-0 h-full w-full object-cover opacity-50" />
+        <img src={img.network} srcSet={srcSet(img.network)} sizes="100vw" alt="" fetchPriority="high" decoding="async" className="animate-kenburns absolute inset-0 h-full w-full object-cover opacity-50" />
         <NetworkBackground />
         <div className="bg-hero absolute inset-0" />
         <div className="animate-float absolute right-[10%] top-[25%] h-72 w-72 rounded-full bg-accent-gradient opacity-30 blur-3xl" />
@@ -80,7 +80,7 @@ export default function Index() {
           </Link>
         </Reveal>
         <Reveal delay={150} className="relative">
-          <img src={img.engineer} alt="Engineer" className="aspect-[4/5] w-full rounded-[2rem] object-cover shadow-soft" />
+          <img src={img.engineer} srcSet={srcSet(img.engineer, [480, 640, 800])} sizes="(min-width:768px) 40vw, 90vw" alt="Engineer" loading="lazy" decoding="async" className="aspect-[4/5] w-full rounded-[2rem] object-cover shadow-soft" />
           <div className="glass animate-float absolute -bottom-8 -left-8 rounded-3xl p-6 shadow-soft">
             <p className="font-display text-3xl font-bold text-primary">2026</p>
             <p className="text-sm text-muted-foreground">{t({ de: "Betrieb Rodgau, Seligenstadt & Hainburg", en: "Operating Rodgau, Seligenstadt & Hainburg" })}</p>
@@ -98,7 +98,7 @@ export default function Index() {
             {services.slice(0, 6).map((s, i) => (
               <Reveal key={s.title.de} delay={(i % 3) * 120}>
                 <Link to="/leistungen" className="group relative block h-96 overflow-hidden rounded-[2rem] bg-ink">
-                  <img src={s.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-110" />
+                  <img src={s.image} srcSet={srcSet(s.image, [480, 640, 800, 1000])} sizes="(min-width:768px) 33vw, 100vw" alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-110" />
                   <div className="bg-hero absolute inset-0 opacity-80" />
                   <div className="relative flex h-full flex-col justify-between p-7">
                     <span className="self-end rounded-full bg-ink-foreground/15 p-3 text-ink-foreground transition-all group-hover:rotate-45 group-hover:bg-accent group-hover:text-accent-foreground"><ArrowUpRight /></span>

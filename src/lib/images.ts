@@ -1,16 +1,26 @@
-// Royalty-free photos from Unsplash (Unsplash License).
-const u = (id: string, w = 1600) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
-
+// Royalty-free photos from Unsplash (Unsplash License), vendored into public/images
+// as responsive WebP (see the 960/1600 variants) so they load from our own host.
 export const img = {
-  fiber: u("1544197150-b99a580bb7a8"),
-  server: u("1558494949-ef010cbdcc31"),
-  engineer: u("1581092160562-40aa08e78837"),
-  construction: u("1504307651254-35680f356dfd"),
-  building: u("1486406146926-c627a92ad1ab"),
-  team: u("1522071820081-009f0129c71c"),
-  network: u("1451187580459-43490279c0fa"),
-  office: u("1497366216548-37526070297c"),
-  electric: u("1621905251189-08b45d6a269e"),
-  meeting: u("1600880292203-757bb62b4baf"),
+  fiber: "/images/fiber-1600.webp",
+  server: "/images/server-1600.webp",
+  engineer: "/images/engineer-1600.webp",
+  construction: "/images/construction-1600.webp",
+  building: "/images/building-1600.webp",
+  team: "/images/team-1600.webp",
+  network: "/images/network-1600.webp",
+  office: "/images/office-1600.webp",
+  electric: "/images/electric-1600.webp",
+  meeting: "/images/meeting-1600.webp",
 };
-export const ogImage = (id: keyof typeof img) => img[id].replace("w=1600", "w=1200&h=630");
+
+export const ogImage = (id: keyof typeof img) => img[id];
+
+/**
+ * Responsive `srcset` for a full-size (1600) path: emits the local 960 + 1600
+ * WebP variants. The extra `widths` argument is accepted for call-site
+ * compatibility but ignored since we ship two fixed sizes.
+ */
+export const srcSet = (url: string, _widths?: number[]): string => {
+  const small = url.replace(/-1600\.webp$/, "-960.webp");
+  return `${small} 960w, ${url} 1600w`;
+};

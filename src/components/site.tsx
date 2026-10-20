@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, Mail, Phone, MapPin, Linkedin, ArrowUpRight } from "lucide-react";
 import { useLang, useT } from "@/lib/i18n";
+import { srcSet } from "@/lib/images";
 
 export * from "./NetworkBackground";
 
@@ -132,7 +133,7 @@ export function Footer() {
 export function PageHero({ image, eyebrow, title, text }: { image: string; eyebrow: string; title: string; text: string }) {
   return (
     <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-ink pb-20 pt-40">
-      <img src={image} alt="" className="animate-kenburns absolute inset-0 h-full w-full object-cover" />
+      <img src={image} srcSet={srcSet(image)} sizes="100vw" alt="" fetchPriority="high" decoding="async" className="animate-kenburns absolute inset-0 h-full w-full object-cover" />
       <div className="bg-hero absolute inset-0" />
       <div className="relative mx-auto w-full max-w-7xl px-6">
         <p className="animate-rise mb-4 text-sm font-bold uppercase tracking-[0.3em] text-accent">{eyebrow}</p>

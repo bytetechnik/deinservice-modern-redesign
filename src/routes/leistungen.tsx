@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useSeo } from "@/lib/seo";
-import { img, ogImage } from "@/lib/images";
+import { img, ogImage, srcSet } from "@/lib/images";
 import { services } from "@/lib/services";
 import { PageHero, Reveal, CTA } from "@/components/site";
 
@@ -23,7 +23,7 @@ export default function Page() {
         {services.map((s, i) => (
           <div key={s.title.de} className={`grid items-center gap-12 md:grid-cols-2 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
             <Reveal className="overflow-hidden rounded-[2rem] shadow-soft">
-              <img src={s.image} alt={t(s.title)} className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-105" />
+              <img src={s.image} srcSet={srcSet(s.image, [640, 960, 1280])} sizes="(min-width:768px) 50vw, 100vw" alt={t(s.title)} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-105" />
             </Reveal>
             <Reveal delay={150}>
               <span className="font-display text-6xl font-bold text-gradient">0{i + 1}</span>
