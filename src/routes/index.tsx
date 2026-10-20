@@ -31,8 +31,8 @@ export default function Index() {
     <>
       <section className="relative flex min-h-screen items-center overflow-hidden bg-ink">
         <img src={img.network} srcSet={srcSet(img.network)} sizes="100vw" alt="" fetchPriority="high" decoding="async" className="animate-kenburns absolute inset-0 h-full w-full object-cover opacity-50" />
-        <NetworkBackground />
         <div className="bg-hero absolute inset-0" />
+        <NetworkBackground />
         <div className="animate-float absolute right-[10%] top-[25%] h-72 w-72 rounded-full bg-accent-gradient opacity-30 blur-3xl" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pt-24">
           <p className="animate-rise mb-6 inline-flex items-center gap-2 rounded-full border border-ink-foreground/20 px-4 py-2 text-sm font-semibold text-ink-foreground/90">

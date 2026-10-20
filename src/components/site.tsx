@@ -21,7 +21,7 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
 }
 
 const nav = [
-  { to: "/", de: "Start", en: "Home" },
+  { to: "/", de: "Willkommen", en: "Home" },
   { to: "/leistungen", de: "Leistungen", en: "Services" },
   { to: "/projekte", de: "Projekte", en: "Projects" },
   { to: "/ueber-uns", de: "Über uns", en: "About" },

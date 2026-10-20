@@ -41,7 +41,7 @@ export const NetworkBackground: React.FC = () => {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
         ctx.fill();
       }
     }
@@ -63,34 +63,38 @@ export const NetworkBackground: React.FC = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < particles.length; i++) {
-        particles[i].update(canvas.width, canvas.height);
-        particles[i].draw();
+        const p = particles[i];
+        if (!p) continue;
+        p.update(canvas.width, canvas.height);
+        p.draw();
 
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+          const q = particles[j];
+          if (!q) continue;
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 100) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(178, 235, 247, ${0.9 * (1 - distance / 100)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
             ctx.stroke();
           }
         }
 
         if (mouse.x !== null && mouse.y !== null) {
-          const dx = particles[i].x - mouse.x;
-          const dy = particles[i].y - mouse.y;
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < mouse.radius) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${1 - distance / mouse.radius})`; // Use accent color theme
-            ctx.lineWidth = 1;
-            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.strokeStyle = `rgba(134, 209, 244, ${1 - distance / mouse.radius})`; // Accent glow near the pointer
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
           }
@@ -105,7 +109,19 @@ export const NetworkBackground: React.FC = () => {
       mouse.y = event.clientY;
     };
 
-    const handleMouseLeave = () => {
+    // Same join effect on touch: finger acts as the pointer, lifted on touchend/cancel.
+    const handleTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+    };
+
+    const handleTouchStart = (event: TouchEvent) => {
+      handleTouchMove(event);
+    };
+
+    const clearMouse = () => {
       mouse.x = null;
       mouse.y = null;
     };
@@ -115,7 +131,11 @@ export const NetworkBackground: React.FC = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('mouseleave', clearMouse);
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', clearMouse);
+    window.addEventListener('touchcancel', clearMouse);
     window.addEventListener('resize', handleResize);
 
     init();
@@ -123,7 +143,11 @@ export const NetworkBackground: React.FC = () => {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('mouseleave', clearMouse);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', clearMouse);
+      window.removeEventListener('touchcancel', clearMouse);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
@@ -132,7 +156,7 @@ export const NetworkBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 h-full w-full pointer-events-none opacity-40"
+      className="absolute inset-0 h-full w-full pointer-events-none opacity-70"
       style={{ background: 'transparent' }}
     />
   );
